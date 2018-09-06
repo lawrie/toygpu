@@ -31,7 +31,11 @@ either expressed or implied, of the ToyGPU project.
 
 
 module top (
+`ifdef blackice
+    input CLK100,
+`else
     input REFCLK,  /* 16MHz clock */
+`endif
     output USBPU,  /* USB pull-up resistor */
 
     /*  SPI signals  */
@@ -52,6 +56,21 @@ module top (
 
     wire clk;
 
+`ifdef blackice
+    /*  Generate a 50 MHz internal clock from 100 MHz input clock  */
+    SB_PLL40_CORE #(
+		.FEEDBACK_PATH("SIMPLE"),
+		.DIVR(4'b0000),		// DIVR =  0
+		.DIVF(7'b0000111),	// DIVF =  7
+		.DIVQ(3'b100),		// DIVQ =  4
+		.FILTER_RANGE(3'b101)	// FILTER_RANGE = 5
+	) pll (
+		.RESETB(1'b1),
+		.BYPASS(1'b0),
+		.REFERENCECLK(CLK100),
+		.PLLOUTCORE(clk)
+		);
+`else
     /*  Generate a 50 MHz internal clock from 16 MHz input clock  */
     SB_PLL40_CORE #(
         .FEEDBACK_PATH("SIMPLE"),
@@ -66,6 +85,7 @@ module top (
         .RESETB(1'b1),
         .BYPASS(1'b0)
     );
+`endif
 
     wire swap;
     wire [10:0] write_edge_count;
