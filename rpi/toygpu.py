@@ -43,7 +43,7 @@ import toybuffer
 import toy3d
 
 
-VSYNC_PIN = 25
+VSYNC_PIN = 21
 SPI_TRANSFER_SPEED = 4 * 1024 * 1024
 COMMAND_BUFFER_SIZE = 8192
 

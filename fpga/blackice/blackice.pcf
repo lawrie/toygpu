@@ -16,3 +16,5 @@ set_io VSYNC 7
 set_io RED 16
 set_io GRN 1
 set_io BLU 11
+
+set_io VSYNC_COPY 105

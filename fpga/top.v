@@ -33,6 +33,7 @@ either expressed or implied, of the ToyGPU project.
 module top (
 `ifdef blackice
     input CLK100,
+    output VSYNC_COPY,
 `else
     input REFCLK,  /* 16MHz clock */
 `endif
@@ -57,6 +58,8 @@ module top (
     wire clk;
 
 `ifdef blackice
+
+    assign VSYNC_COPY = VSYNC;
     /*  Generate a 50 MHz internal clock from 100 MHz input clock  */
     SB_PLL40_CORE #(
 		.FEEDBACK_PATH("SIMPLE"),
